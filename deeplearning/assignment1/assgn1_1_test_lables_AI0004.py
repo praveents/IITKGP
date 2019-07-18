@@ -72,7 +72,7 @@ print('Training data size:', X_train.size)
 print('Training data shape:', X_test.shape)
 print('Training data size:', X_test.size)
 
-activation_function = 'tanh'
+activation_function = 'relu'
 # create and fit the network
 NN_model = Sequential()
 
@@ -81,19 +81,22 @@ NN_model = Sequential()
 NN_model.add(Dense(512, kernel_initializer='normal', input_dim=1,activation=activation_function))
 
 # The Hidden Layers :
+NN_model.add(Dense(256, kernel_initializer='normal', activation=activation_function))
 NN_model.add(Dense(128, kernel_initializer='normal', activation=activation_function))
 NN_model.add(Dense(64, kernel_initializer='normal', activation=activation_function))
 NN_model.add(Dense(32, kernel_initializer='normal', activation=activation_function))
+NN_model.add(Dense(16, kernel_initializer='normal', activation=activation_function))
 
 # The Output Layer :
 NN_model.add(Dense(1, kernel_initializer='normal'))
 
 # Compile the network :
-NN_model.compile(loss='mean_squared_error', optimizer=keras.optimizers.SGD(lr=0.01), metrics=['mean_squared_error'])
+#  keras.optimizers.SGD(lr=0.001)
+NN_model.compile(loss='mean_squared_error', optimizer= keras.optimizers.Adadelta() , metrics=['mean_squared_error'])
 NN_model.summary()
 
 # NN_model.compile(loss='mean_squared_error', optimizer='adam')
-NN_model.fit(X_train, y_train,  epochs=10, batch_size=32, verbose=2)
+NN_model.fit(X_train, y_train,  epochs=4, batch_size=32, verbose=2)
 
 y_predict = NN_model.predict(X_test)
 plt.hist(y_predict, bins='auto', color='b')
